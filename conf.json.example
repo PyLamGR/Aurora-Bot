@@ -1,4 +1,6 @@
 {
-  "token": "YOUR_TOKEN_HERE"
+  "token": "YOUR_TOKEN_HERE",
+  "prefix": "!",
+  "description": "Are you ready to harness the power of the Aurora?
 }
 
