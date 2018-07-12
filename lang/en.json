@@ -1,0 +1,5 @@
+{
+  "TAG_REQUIRED": "Please tag the selected user.",
+  "MEMBER_NOT_FOUND": "Could not find member! Have you tried tagging them?",
+  "UNKNOWN_ERROR": "Unknown error occurred."
+}

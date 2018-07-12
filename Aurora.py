@@ -1,31 +1,22 @@
-import json
 import logging
-import discord
-import random
-
 from discord.ext import commands
+from configs import conf, lang
 
-# from discord import NotFound, HTTPException
+extensions = ['members', 'rng']
+
 
 # Setup Logging
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-handler = logging.FileHandler('aurora.log', encoding='utf-8')
-handler.setFormatter(logging.Formatter('{asctime}:{levelname}:{name}:{message}', style='{'))
-logger.addHandler(handler)
-
-# Load Configuration file
-with open('conf.json') as fp:
-    conf = json.load(fp)
-
+try:
+    logger = logging.getLogger()
+    logger.setLevel(conf['logging']['level'])
+    handler = logging.FileHandler(conf['logging']['file'], encoding='utf-8')
+    handler.setFormatter(logging.Formatter('{asctime}:{levelname}:{name}:{message}', style='{'))
+    logger.addHandler(handler)
+except Exception as e:
+    exc = '{}: {}'.format(type(e).__name__, e)
+    print('Failed to load configuration file {}\n{}'.format(conf['logging']['file'], exc))
 
 bot = commands.Bot(command_prefix=conf['prefix'], description=conf['description'])
-
-
-client = discord.Client()
-extensions = ['rng']
-
-all_commands = {"!hello", "!pm", "!clock", "!amiadmin", "!everyone", "!online", "!makeadmin", "!removeadmin"}
 
 
 @bot.event
@@ -40,29 +31,31 @@ async def on_ready():
 
 
 @bot.command()
-async def joined(member : discord.Member):
-    """Says when a member joined."""
-    await bot.say('{0.name} joined in {0.joined_at}'.format(member))
+async def load(extension_name: str):
+    """Loads an extension."""
+    try:
+        bot.load_extension(extension_name)
+    except (AttributeError, ImportError) as e:
+        await bot.say("```py\n{}: {}\n```".format(type(e).__name__, str(e)))
+        return
+    await bot.say("{} loaded.".format(extension_name))
 
-# @bot.command()
-# async def roll(dice : str):
-#     """Rolls a dice in NdN format."""
-#     try:
-#         rolls, limit = map(int, dice.split('d'))
-#     except Exception:
-#         await bot.say('Format has to be in NdN!')
-#         return
-#
-#     result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
-#     await bot.say(result)
+
+@bot.command()
+async def unload(extension_name: str):
+    """Unloads an extension."""
+    bot.unlo1ad_extension(extension_name)
+    await bot.say("{} unloaded.".format(extension_name))
 
 
 if __name__ == "__main__":
+
+
     for extension in extensions:
-        try:
-            bot.load_extension('extensions.'+extension)
-        except Exception as e:
-            exc = '{}: {}'.format(type(e).__name__, e)
-            print('Failed to load extension {}\n{}'.format(extension, exc))
+        # try:
+        bot.load_extension('extensions.'+extension)
+        # except Exception as e:
+        #     exc = '{}: {}'.format(type(e).__name__, e)
+        #     print('Failed to load extension {}\n{}'.format(extension, exc))
 
     bot.run(conf['token'])
