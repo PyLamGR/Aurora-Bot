@@ -11,7 +11,7 @@ async def on_ready():
     print("Name:{0} ID:{1}".format(client.user.name, client.user.id))
     for channel in client.get_all_channels():
         if channel.name == "general":
-            await client.send_message(client.get_channel(str(channel.id)), "Hi i'm {0} type help for commands".format(client.user.name))
+            await client.send_message(client.get_channel(str(channel.id)), "Hi i'm {0} type help for extensions".format(client.user.name))
             break
 
 @client.event
@@ -52,7 +52,7 @@ async def on_message(message):
                 if member.status == discord.Status.online:
                     await client.send_message(message.channel, member.name)
         elif message.content.startswith("!makeadmin"):
-            # TODO makeadmin and removeadmin commands raises FORBIDDEN ERROR find a way to solve it
+            # TODO makeadmin and removeadmin extensions raises FORBIDDEN ERROR find a way to solve it
             for role in message.author.roles:
                 if role.permissions.administrator:
                     try:

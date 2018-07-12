@@ -1,3 +1,7 @@
+### CUSTOM Gitignore ###
+conf.json
+
+
 
 # Created by https://www.gitignore.io/api/python,pycharm,jetbrains,pycharm+all
 
