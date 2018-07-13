@@ -13,6 +13,7 @@ class Singleton(type):
 class GenericConfig(metaclass=Singleton):
     name = 'generic_config'
     data = None
+    # data_dot_seperated = None
 
     def __init__(self):
         self.load_config()
@@ -24,6 +25,18 @@ class GenericConfig(metaclass=Singleton):
     def load_config(self):
         with open(self.get_file_name()) as fp:
             self.data = json.load(fp)
+    #     self.data_dot_seperated = GenericConfig.get_keys(self.data, '')
+    #
+    # @staticmethod
+    # def get_keys(val, old="$"):
+    #     if isinstance(val, dict):
+    #         for k in val.keys():
+    #             GenericConfig.get_keys(val[k], old + "." + str(k))
+    #     elif isinstance(val, list):
+    #         for i, k in enumerate(val):
+    #             GenericConfig.get_keys(k, old + "." + str(i))
+    #     else:
+    #         print("{} : {}".format(old, str(val)))
 
     def _init_message(self):
         return '{} initialized ({})'.format(type(self).__name__, self.get_file_name())

@@ -1,3 +1,4 @@
+import time
 import discord
 from discord.ext import commands
 import lang
@@ -8,16 +9,16 @@ class Members:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, aliases=['member_since'])
     async def joined(self, ctx, member: discord.Member = None):
         """Says when a member joined."""
         if member is None:
-            print("Oh ho")
             return await self.bot.say(lang.TAG_REQUIRED)
 
         joined_at = member.joined_at  # TODO: Add args for simple & detailed printing
-
         await self.bot.say('{0.name} joined in {1}'.format(member, joined_at))
+        parsed_joined_at = time.strptime(joined_at)
+        print(time.strftime("%a %b %d %H:%M:%S %Y", parsed_joined_at))
 
     @joined.error
     async def joined_error(self, ctx, error):
@@ -29,7 +30,6 @@ class Members:
             await self.bot.say(lang.MEMBER_NOT_FOUND)
         else:
             await self.bot.say(lang.UNKNOWN_ERROR)
-
 
     @commands.group(pass_context=True)
     async def cool(self, ctx):

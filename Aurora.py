@@ -2,7 +2,7 @@ import logging
 from discord.ext import commands
 from configs import conf, lang
 
-extensions = ['members', 'rng']
+extensions = ['music', 'members', 'rng']
 
 
 # Setup Logging
@@ -58,4 +58,4 @@ if __name__ == "__main__":
         #     exc = '{}: {}'.format(type(e).__name__, e)
         #     print('Failed to load extension {}\n{}'.format(extension, exc))
 
-    bot.run(conf['token'])
+    bot.run(conf['token'], bot=True, reconnect=True)

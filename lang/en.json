@@ -1,5 +1,20 @@
 {
   "TAG_REQUIRED": "Please tag the selected user.",
   "MEMBER_NOT_FOUND": "Could not find member! Have you tried tagging them?",
-  "UNKNOWN_ERROR": "Unknown error occurred."
+  "UNKNOWN_ERROR": "Unknown error occurred.",
+  "MUSIC":{
+    "NOW_PLAYING": "Now playing {current_song}.",
+    "NOT_A_VOICE_CHANNEL": "This is not a voice channel...",
+    "IN_ANOTHER_VOICE_CHANNEL": "I am already in another voice channel...",
+    "READY_TO_PLAY": "Ready to play audio in {channel.name}.",
+    "USER_NOT_IN_VOICE_CHANNEL": "It seems you are not in a voice channel.",
+    "VOICE_ENTRY": "*{player.title}* uploaded by {player.uploader} and requested by {requester.display_name}.",
+    "ENQUEUE_SUCCESS": "Enqueued: {entry}.",
+    "VOLUME_CHANGE": "Set the volume to {:.volume%}.",
+    "NOT_PLAYING": "Not playing any music right now.",
+    "SKIP_REQUESTER": "Requester {requester.display_name} skipped his current song {current_song} ",
+    "SKIP_VOTE_PASSED": "Skip vote passed, skipping song...",
+    "SKIP_VOTE_ADDED": "Skip vote added, currently at [{current_votes}/3]",
+    "SKIP_ALREADY_VOTED": "You have already voted to skip this song."
+  }
 }
