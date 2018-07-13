@@ -2,5 +2,13 @@
   "token": "YOUR_TOKEN_HERE",
   "prefix": "!",
   "description": "Are you ready to harness the power of the Aurora?
+  "presence": "with code <3",
+  "lang": "en",
+
+  "logging": {
+      "file": "aurora.log",
+      "level": "INFO"
+  }
 }
+
 

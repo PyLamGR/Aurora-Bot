@@ -1,5 +1,6 @@
 import logging
 from discord.ext import commands
+from discord import Game
 from configs import conf, lang
 
 extensions = ['music', 'members', 'rng']
@@ -28,6 +29,8 @@ async def on_ready():
           "----------------------------\n"
           "{2}"
           .format(bot.user.name, bot.user.id, conf['description']))
+    if conf['presence']:
+        await bot.change_presence(game=Game(name=conf['presence']))
 
 
 @bot.command()

@@ -62,9 +62,7 @@ class VoiceState:
 
 
 class Music:
-    """Voice related commands.
-    Works in multiple servers at once.
-    """
+    """Let Aurora become your DJ."""
     def __init__(self, bot):
         self.bot = bot
         self.voice_states = {}
@@ -90,18 +88,19 @@ class Music:
                     self.bot.loop.create_task(state.voice.disconnect())
             except:
                 pass
-    #
-    # @commands.group(pass_context=True)
-    # async def music(self, ctx):
-    #     """Says if a user is cool.
-    #     In reality this just checks if a subcommand is being invoked.
-    #     """
-    #     if ctx.invoked_subcommand is None:
-    #         await self.bot.say('No, {0.subcommand_passed} is not cool'.format(ctx))
 
-    @commands.command(pass_context=True, no_pm=True)
-    async def join(self, ctx, *, channel : discord.Channel):
-        """Joins a voice channel."""
+    @commands.group(pass_context=True)
+    async def music(self, ctx):
+        """Music related commands"""
+        if ctx.invoked_subcommand is None:
+            await self.bot.say('Seems like commands "{0.subcommand_passed}" doesn\'t exist!'.format(ctx))
+
+    @music.command(pass_context=True, no_pm=True)
+    async def join(self, ctx, *, channel: discord.Channel = None):
+        """Joins a specific voice channel."""
+        if channel is None:  # If no channel is provided, try to join the users channel.
+            channel = ctx.message.author.voice_channel
+
         try:
             await self.create_voice_client(channel)
         except discord.ClientException:
@@ -111,9 +110,9 @@ class Music:
         else:
             await self.bot.say(str(lang['MUSIC']['READY_TO_PLAY']).format(channel=channel))
 
-    @commands.command(pass_context=True, no_pm=True)
+    @music.command(pass_context=True, no_pm=True)
     async def summon(self, ctx):
-        """Summons the bot to join your voice channel."""
+        """Summons the bot on your voice channel."""
         summoned_channel = ctx.message.author.voice_channel
         if summoned_channel is None:
             await self.bot.say(lang['MUSIC']['USER_NOT_IN_VOICE_CHANNEL'])
@@ -127,8 +126,8 @@ class Music:
 
         return True
 
-    @commands.command(pass_context=True, no_pm=True)
-    async def play(self, ctx, *, song : str):
+    @music.command(pass_context=True, no_pm=True)
+    async def play(self, ctx, *, song: str):
         """Plays a song.
         If there is a song currently in the queue, then it is
         queued until the next song is done playing.
@@ -158,8 +157,8 @@ class Music:
             await self.bot.say(str(lang['MUSIC']['ENQUEUE_SUCCESS']).format(entry=entry))
             await state.songs.put(entry)
 
-    @commands.command(pass_context=True, no_pm=True)
-    async def volume(self, ctx, value : int):
+    @music.command(pass_context=True, no_pm=True)
+    async def volume(self, ctx, value: int):
         """Sets the volume of the currently playing song."""
 
         state = self.get_voice_state(ctx.message.server)
@@ -168,7 +167,7 @@ class Music:
             player.volume = value / 100
             await self.bot.say(str(lang['MUSIC']['VOLUME_CHANGE']).format(volume=player.volume))
 
-    @commands.command(pass_context=True, no_pm=True)
+    @music.command(pass_context=True, no_pm=True)
     async def pause(self, ctx):
         """Pauses the currently played song."""
         state = self.get_voice_state(ctx.message.server)
@@ -176,7 +175,7 @@ class Music:
             player = state.player
             player.pause()
 
-    @commands.command(pass_context=True, no_pm=True)
+    @music.command(pass_context=True, no_pm=True)
     async def resume(self, ctx):
         """Resumes the currently played song."""
         state = self.get_voice_state(ctx.message.server)
@@ -184,7 +183,7 @@ class Music:
             player = state.player
             player.resume()
 
-    @commands.command(pass_context=True, no_pm=True)
+    @music.command(pass_context=True, no_pm=True)
     async def stop(self, ctx):
         """Stops playing audio and leaves the voice channel.
         This also clears the queue.
@@ -203,7 +202,7 @@ class Music:
         except:
             pass
 
-    @commands.command(pass_context=True, no_pm=True)
+    @music.command(pass_context=True, no_pm=True)
     async def skip(self, ctx):
         """Vote to skip a song. The song requester can automatically skip.
         3 skip votes are needed for the song to be skipped.
@@ -230,7 +229,7 @@ class Music:
         else:
             await self.bot.say(lang['MUSIC']['SKIP_ALREADY_VOTED'])
 
-    @commands.command(pass_context=True, no_pm=True)
+    @music.command(pass_context=True, no_pm=True)
     async def playing(self, ctx):
         """Shows info about the currently played song."""
 
